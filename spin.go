@@ -26,6 +26,7 @@ type Spinner struct {
 	frames []rune
 	length int
 	pos    int
+	done   bool
 }
 
 // New returns a spinner initialized with Default frames.
@@ -49,6 +50,9 @@ func (s *Spinner) Current() string {
 
 // Next returns the next rune in the sequence.
 func (s *Spinner) Next() string {
+	if s.done {
+		return ""
+	}
 	r := s.frames[s.pos%s.length]
 	s.pos++
 	return string(r)
@@ -57,4 +61,9 @@ func (s *Spinner) Next() string {
 // Reset the spinner to its initial frame.
 func (s *Spinner) Reset() {
 	s.pos = 0
+}
+
+// Done sets the spinner to a done state.
+func (s *Spinner) Done() {
+	s.done = true
 }
